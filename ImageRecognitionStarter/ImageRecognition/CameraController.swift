@@ -13,6 +13,8 @@ class CameraController: UIViewController {
 
     @IBOutlet weak var descriptionLabel: UILabel!
     
+    var mlModel = Inceptionv3()
+    
     var captureSession = AVCaptureSession()
     var videoPreviewLayer: AVCaptureVideoPreviewLayer?
     
@@ -49,6 +51,10 @@ class CameraController: UIViewController {
             
             // Set the input device on the capture session.
             captureSession.addInput(input)
+            let videoDataOutput = AVCaptureVideoDataOutput()
+            videoDataOutput.setSampleBufferDelegate(self, queue: DispatchQueue(label: "imageRecognition.queue"))
+            videoDataOutput.alwaysDiscardsLateVideoFrames = true
+            captureSession.addOutput(videoDataOutput)
                         
         } catch {
             // If any error occurs, simply print it out and don't continue any more.
@@ -64,9 +70,49 @@ class CameraController: UIViewController {
         
         // Bring the label to the front
         descriptionLabel.text = "Looking for objects..."
-        view.bringSubview(toFront: descriptionLabel)
+        view.bringSubviewToFront(descriptionLabel)
     }
 }
 
-
+extension CameraController: AVCaptureVideoDataOutputSampleBufferDelegate {
+    func captureOutput(_ output: AVCaptureOutput, didOutput sampleBuffer: CMSampleBuffer, from connection: AVCaptureConnection) {
+        connection.videoOrientation = .portrait
+        
+        guard let imageBuffer = CMSampleBufferGetImageBuffer(sampleBuffer) else { return }
+        
+        let ciImage = CIImage(cvPixelBuffer: imageBuffer)
+        let image = UIImage(ciImage: ciImage)
+        
+        UIGraphicsBeginImageContext(CGSize(width: 299.0, height: 299.0))
+        image.draw(in: CGRect(x: 0.0, y: 0.0, width: 299.0, height: 299.0))
+        let resizedImage = UIGraphicsGetImageFromCurrentImageContext()!
+        UIGraphicsEndImageContext()
+        
+        let attrs = [kCVPixelBufferCGImageCompatibilityKey: kCFBooleanTrue, kCVPixelBufferCGBitmapContextCompatibilityKey: kCFBooleanTrue] as CFDictionary
+        var pixelBuffer: CVPixelBuffer?
+        let status = CVPixelBufferCreate(kCFAllocatorDefault, Int(resizedImage.size.width), Int(resizedImage.size.height), kCVPixelFormatType_32ARGB, attrs, &pixelBuffer)
+        
+        guard status == kCVReturnSuccess else { return }
+        
+        CVPixelBufferLockBaseAddress(pixelBuffer!, CVPixelBufferLockFlags(rawValue: 0))
+        let pixelData = CVPixelBufferGetBaseAddress(pixelBuffer!)
+        
+        let rgbColorSpace = CGColorSpaceCreateDeviceRGB()
+        let context = CGContext(data: pixelData, width: Int(resizedImage.size.width), height: Int(resizedImage.size.height), bitsPerComponent: 8, bytesPerRow: CVPixelBufferGetBytesPerRow(pixelBuffer!), space: rgbColorSpace, bitmapInfo: CGImageAlphaInfo.noneSkipFirst.rawValue)
+        
+        context?.translateBy(x: 0.0, y: resizedImage.size.height)
+        context?.scaleBy(x: 1.0, y: -1.0)
+        
+        UIGraphicsPushContext(context!)
+        resizedImage.draw(in: CGRect(x: 0.0, y: 0.0, width: resizedImage.size.width, height: resizedImage.size.height))
+        UIGraphicsPopContext()
+        
+        if let pixelBuffer = pixelBuffer, let output = try? mlModel.prediction(image: pixelBuffer) {
+            DispatchQueue.main.async {
+                self.descriptionLabel.text = output.classLabel
+            }
+        }
+        
+    }
+}
 

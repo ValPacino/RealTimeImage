@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		DE5C261322A0742000411C4A /* Inceptionv3.mlmodel in Sources */ = {isa = PBXBuildFile; fileRef = DE5C261222A0742000411C4A /* Inceptionv3.mlmodel */; };
 		F4B7DAED207CA492007CB607 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4B7DAEC207CA492007CB607 /* AppDelegate.swift */; };
 		F4B7DAEF207CA492007CB607 /* CameraController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4B7DAEE207CA492007CB607 /* CameraController.swift */; };
 		F4B7DAF2207CA492007CB607 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F4B7DAF0207CA492007CB607 /* Main.storyboard */; };
@@ -15,6 +16,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		DE5C261222A0742000411C4A /* Inceptionv3.mlmodel */ = {isa = PBXFileReference; lastKnownFileType = file.mlmodel; name = Inceptionv3.mlmodel; path = ../../../Inceptionv3.mlmodel; sourceTree = "<group>"; };
 		F4B7DAE9207CA492007CB607 /* ImageRecognition.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ImageRecognition.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		F4B7DAEC207CA492007CB607 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		F4B7DAEE207CA492007CB607 /* CameraController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraController.swift; sourceTree = "<group>"; };
@@ -35,6 +37,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		DE5C261122A0741300411C4A /* MLModel */ = {
+			isa = PBXGroup;
+			children = (
+				DE5C261222A0742000411C4A /* Inceptionv3.mlmodel */,
+			);
+			path = MLModel;
+			sourceTree = "<group>";
+		};
 		F4B7DAE0207CA492007CB607 = {
 			isa = PBXGroup;
 			children = (
@@ -54,6 +64,7 @@
 		F4B7DAEB207CA492007CB607 /* ImageRecognition */ = {
 			isa = PBXGroup;
 			children = (
+				DE5C261122A0741300411C4A /* MLModel */,
 				F4B7DAEC207CA492007CB607 /* AppDelegate.swift */,
 				F4B7DAEE207CA492007CB607 /* CameraController.swift */,
 				F4B7DAF0207CA492007CB607 /* Main.storyboard */,
@@ -96,6 +107,7 @@
 				TargetAttributes = {
 					F4B7DAE8207CA492007CB607 = {
 						CreatedOnToolsVersion = 9.3;
+						LastSwiftMigration = 1020;
 					};
 				};
 			};
@@ -136,6 +148,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				F4B7DAEF207CA492007CB607 /* CameraController.swift in Sources */,
+				DE5C261322A0742000411C4A /* Inceptionv3.mlmodel in Sources */,
 				F4B7DAED207CA492007CB607 /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -281,7 +294,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = YZP52RND5S;
+				DEVELOPMENT_TEAM = TT895NDA3W;
 				INFOPLIST_FILE = ImageRecognition/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -289,7 +302,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.appcoda.ImageRecognition;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 4.0;
+				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
@@ -299,7 +312,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = YZP52RND5S;
+				DEVELOPMENT_TEAM = TT895NDA3W;
 				INFOPLIST_FILE = ImageRecognition/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -307,7 +320,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.appcoda.ImageRecognition;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 4.0;
+				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Release;
